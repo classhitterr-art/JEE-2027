@@ -3,247 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIR < 1000 | JEE 2027</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <title>IIT MISSION CONTROL - AISHWARY</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #f8fafc; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .iit-blue { color: #3b82f6; }
-        .bg-iit { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
-        .rank-glow { box-shadow: 0 0 30px rgba(59, 130, 246, 0.15); }
-        .progress-bar { transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        :root {
+            --bg: #020617;
+            --card: #1e293b;
+            --accent: #0ea5e9;
+            --danger: #dc2626;
+            --success: #10b981;
+            --text: #f8fafc;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+
+        /* STRICT MODE THEMES */
+        body.red-zone { background-color: #450a0a !important; }
+        body.red-zone .card { border: 1px solid var(--danger); }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        /* HEADER SECTION */
+        .iit-logo {
+            font-size: 6rem;
+            font-weight: 900;
+            text-align: center;
+            background: linear-gradient(to bottom, #0ea5e9, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            letter-spacing: 10px;
+        }
+
+        .welcome-banner {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #94a3b8;
+        }
+
+        /* WARNING MESSAGE */
+        #warning-box {
+            display: none;
+            background: var(--danger);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            border: 4px solid white;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        .card {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+        }
+
+        /* TIMER */
+        .timer-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-align: center;
+        }
+
+        /* TASKS */
+        .task-list { margin-top: 15px; }
+        .task-item {
+            display: flex;
+            align-items: center;
+            background: #0f172a;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .task-item:hover { transform: translateX(5px); }
+        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 15px; cursor: pointer; }
+        input[type="text"] { background: transparent; border: none; color: white; width: 100%; font-size: 1rem; }
+
+        /* QUESTIONS */
+        .q-input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #cbd5e1; }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: white;
+        }
+
+        /* MOTIVATION */
+        .quote-box {
+            font-size: 2rem;
+            text-align: center;
+            margin: 50px 0;
+            padding: 20px;
+            border-left: 5px solid var(--accent);
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        /* CALENDAR/GRAPH AREA */
+        .stats-area { grid-column: span 2; }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            .stats-area { grid-column: span 1; }
+            .iit-logo { font-size: 4rem; }
+        }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body id="main-body">
 
-    <!-- ELITE HEADER -->
-    <header class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b border-zinc-800 pb-6">
-        <div>
-            <div class="flex items-center gap-3 mb-2">
-                <span class="bg-blue-600 text-[10px] font-black px-2 py-0.5 rounded tracking-tighter">ELITE PREP</span>
-                <span class="text-zinc-500 text-xs font-bold tracking-widest uppercase italic">Target: Rank < 1000</span>
+<div class="container">
+    <h1 class="iit-logo">IIT</h1>
+    <div class="welcome-banner">Welcome, Commander Aishwary</div>
+
+    <div id="warning-box">
+        "KYON AISHWARYA HO GAYA MAJA? KHEL LIYA APNE SAPNE KE SATH? KAR LIYE MAJE? IIT TO SECOND PRIORITY HAI! 🤬"
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h2 style="margin-top:0">Countdown to Dec 31</h2>
+            <div id="timer" class="timer-display">00d 00h 00m</div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-top:0">Today's Score</h2>
+            <div style="font-size: 3.5rem; text-align: center; font-weight: 900;" id="score-display">0%</div>
+            <div id="bonus-status" style="text-align:center; color: gold; font-weight: bold;"></div>
+        </div>
+
+        <div class="card">
+            <h3>Daily Slots (Min 6 Required)</h3>
+            <div class="task-list" id="task-list">
+                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 1..." class="t-text"></div>
+                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 2..." class="t-text"></div>
+                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 3..." class="t-text"></div>
+                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 4..." class="t-text"></div>
+                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 5..." class="t-text"></div>
+                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 6..." class="t-text"></div>
             </div>
-            <h1 id="welcome-msg" class="text-5xl font-black tracking-tighter text-white italic uppercase leading-none">COMMANDER</h1>
-            <p id="daily-quote" class="text-zinc-400 mt-3 text-sm italic font-medium"></p>
         </div>
-        <div class="text-right mt-6 md:mt-0">
-            <div class="mono text-3xl font-bold text-blue-500 tracking-tighter" id="countdown">000d : 00h : 00m : 00s</div>
-            <p class="text-[10px] text-zinc-500 font-bold uppercase mt-1 tracking-widest italic tracking-widest">To Mission: 20 Jan 2027</p>
-        </div>
-    </header>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="card">
+            <h3>Questions (Target 60)</h3>
+            <div class="q-input-group">
+                <label>Physics (Target 20)</label>
+                <input type="number" id="p-q" value="0" max="20" class="q-val">
+            </div>
+            <div class="q-input-group">
+                <label>Chemistry (Target 20)</label>
+                <input type="number" id="c-q" value="0" max="20" class="q-val">
+            </div>
+            <div class="q-input-group">
+                <label>Maths (Target 20)</label>
+                <input type="number" id="m-q" value="0" max="20" class="q-val">
+            </div>
+        </div>
+
+        <div class="card stats-area">
+            <h3>Annual Performance Tracker</h3>
+            <canvas id="progressChart" height="100"></canvas>
+        </div>
+    </div>
+
+    <div class="quote-box" id="quote">
+        "If you don't sacrifice for what you want, what you want becomes the sacrifice."
+    </div>
+</div>
+
+<script>
+    // INITIALIZATION & DATA RECOVERY
+    let history = JSON.parse(localStorage.getItem('study_history')) || {};
+    let streak = parseInt(localStorage.getItem('success_streak')) || 0;
+    let failDays = parseInt(localStorage.getItem('fail_days')) || 0;
+
+    // TIMER LOGIC
+    function updateTimer() {
+        const target = new Date("December 31, 2026 23:59:59").getTime();
+        const now = new Date().getTime();
+        const d = target - now;
+        const days = Math.floor(d / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById('timer').innerHTML = `${days}d ${hours}h`;
+    }
+    setInterval(updateTimer, 1000);
+
+    // CORE CALCULATION
+    function calculateDaily() {
+        const q_inputs = document.querySelectorAll('.q-val');
+        let totalQ = 0;
+        q_inputs.forEach(input => totalQ += parseInt(input.value || 0));
         
-        <!-- LEFT COLUMN (7 Columns) -->
-        <div class="lg:col-span-7 space-y-8">
-            
-            <!-- DAILY FIREPOWER (QUESTION TRACKER) -->
-            <div class="glass rounded-3xl p-8 border-t-4 border-blue-500 rank-glow">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-black uppercase tracking-tight">Daily Firepower</h3>
-                    <div class="text-right">
-                        <span class="text-[10px] text-zinc-500 uppercase font-black">Personal Best</span>
-                        <div id="pb-display" class="text-lg font-bold text-blue-400 italic">0 Qs</div>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-3 gap-4 mb-6 text-center">
-                    <div class="bg-zinc-900/50 p-4 rounded-2xl border border-zinc-800">
-                        <span class="text-[10px] font-bold text-zinc-500 uppercase">Physics</span>
-                        <input type="number" id="q-phy" oninput="calcTotalQs()" class="block w-full bg-transparent text-center text-2xl font-black mt-1 focus:outline-none focus:text-blue-500" value="0">
-                    </div>
-                    <div class="bg-zinc-900/50 p-4 rounded-2xl border border-zinc-800">
-                        <span class="text-[10px] font-bold text-zinc-500 uppercase">Chem</span>
-                        <input type="number" id="q-chem" oninput="calcTotalQs()" class="block w-full bg-transparent text-center text-2xl font-black mt-1 focus:outline-none focus:text-blue-500" value="0">
-                    </div>
-                    <div class="bg-zinc-900/50 p-4 rounded-2xl border border-zinc-800">
-                        <span class="text-[10px] font-bold text-zinc-500 uppercase">Maths</span>
-                        <input type="number" id="q-math" oninput="calcTotalQs()" class="block w-full bg-transparent text-center text-2xl font-black mt-1 focus:outline-none focus:text-blue-500" value="0">
-                    </div>
-                </div>
+        const qPercent = (totalQ / 60) * 100;
 
-                <div class="flex justify-between items-end">
-                    <div class="text-4xl font-black italic tracking-tighter" id="total-qs">Total: 0</div>
-                    <button onclick="saveQs()" class="text-[10px] font-black bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition">LOG SESSION</button>
-                </div>
-            </div>
+        const tasks = document.querySelectorAll('.t-check');
+        let doneTasks = 0;
+        tasks.forEach(t => { if(t.checked) doneTasks++; });
+        const tPercent = (doneTasks / 6) * 100;
 
-            <!-- DAILY TASKS -->
-            <div class="glass rounded-3xl p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-black uppercase tracking-tight flex items-center gap-3">
-                        <div class="w-1.5 h-6 bg-blue-500"></div> Task Modules
-                    </h3>
-                    <div id="progress-percent" class="text-2xl font-black italic text-blue-400">0%</div>
-                </div>
-                <div class="w-full bg-zinc-900 h-1.5 rounded-full mb-8 overflow-hidden">
-                    <div id="progress-fill" class="progress-bar bg-blue-500 h-full" style="width: 0%"></div>
-                </div>
-                <div class="flex gap-3 mb-6">
-                    <input id="task-input" type="text" placeholder="Assign Task..." class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500 text-sm">
-                    <button onclick="addTask()" class="bg-white text-black px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:invert transition">Add</button>
-                </div>
-                <div id="task-list" class="space-y-3"></div>
-            </div>
-        </div>
-
-        <!-- RIGHT COLUMN (5 Columns) -->
-        <div class="lg:col-span-5 space-y-8">
-            
-            <!-- FORMULA FOCUS -->
-            <div class="bg-iit rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-                <div class="relative z-10">
-                    <h4 class="text-[10px] font-black text-blue-100 uppercase tracking-widest mb-4 opacity-70 italic">Formula of the Day</h4>
-                    <div id="formula-box" class="text-2xl font-bold text-white mono mb-2 tracking-tighter"></div>
-                    <p id="formula-desc" class="text-xs text-blue-100 opacity-90 leading-relaxed"></p>
-                </div>
-                <div class="absolute -right-4 -bottom-4 text-white/5 text-8xl font-black italic">IIT</div>
-            </div>
-
-            <!-- BACKLOG -->
-            <div class="glass rounded-3xl p-8 border-l-4 border-red-600/50">
-                <h3 class="text-sm font-black text-red-500 uppercase tracking-[0.3em] mb-6">Backlog Clearance</h3>
-                <div class="flex gap-2 mb-4">
-                    <input id="backlog-input" type="text" placeholder="Weakness..." class="w-full bg-transparent border-b border-zinc-800 py-1 text-xs focus:outline-none focus:border-red-500">
-                    <button onclick="addBacklog()" class="text-xs text-red-500 font-bold tracking-widest">+</button>
-                </div>
-                <div id="backlog-list" class="space-y-2"></div>
-            </div>
-
-            <!-- IIT THOUGHT -->
-            <div class="glass rounded-3xl p-8 border-b-4 border-blue-500">
-                <p id="iit-thought" class="text-lg font-bold text-white italic leading-tight"></p>
-                <p class="text-[10px] text-zinc-500 uppercase font-black tracking-widest mt-4 italic">— MISSION INTEL</p>
-            </div>
-
-        </div>
-    </main>
-
-    <script>
-        const targetDate = new Date("January 20, 2027 00:00:00").getTime();
-        const quotes = [
-            "If you want to be in the Top 1000, you must do what the other 10 Lakh aren't doing.",
-            "Solve till your hands ache, then solve 10 more.",
-            "JEE Advanced is a battle of nerves. Stay calm, stay sharp.",
-            "AIR 1000 isn't a gift; it's a purchase made with sweat and sleepless nights.",
-            "Organic Chemistry isn't hard; your discipline is just soft. Fix it.",
-            "Calculus is the language of God. Master it."
-        ];
-
-        const formulas = [
-            { math: "\\text{Phy: } v_e = \\sqrt{\\frac{2GM}{R}}", desc: "Escape Velocity: The threshold for freedom." },
-            { math: "\\text{Chem: } PV = nRT", desc: "Ideal Gas Law: The foundation of States of Matter." },
-            { math: "\\text{Math: } \\text{Volume} = [\\vec{a} \\, \\vec{b} \\, \\vec{c}]", desc: "Scalar Triple Product for Geometry." },
-            { math: "\\text{Math: } \\int \\ln x \\, dx = x \\ln x - x + C", desc: "Standard Integral: Essential for area-under-curve." }
-        ];
-
-        window.onload = () => {
-            document.getElementById('welcome-msg').innerText = "COMMANDER";
-            document.getElementById('daily-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('iit-thought').innerText = quotes[Math.floor(Math.random() * quotes.length)];
-            
-            const randomFormula = formulas[Math.floor(Math.random() * formulas.length)];
-            document.getElementById('formula-box').innerText = randomFormula.math;
-            document.getElementById('formula-desc').innerText = randomFormula.desc;
-
-            document.getElementById('pb-display').innerText = (localStorage.getItem('jee-pb') || 0) + " Qs";
-            renderTasks();
-            renderBacklog();
-        };
-
-        // Q TRACKER LOGIC
-        function calcTotalQs() {
-            const p = parseInt(document.getElementById('q-phy').value) || 0;
-            const c = parseInt(document.getElementById('q-chem').value) || 0;
-            const m = parseInt(document.getElementById('q-math').value) || 0;
-            const total = p + c + m;
-            document.getElementById('total-qs').innerText = `Total: ${total}`;
-            return total;
+        const totalDaily = Math.round((qPercent + tPercent) / 2);
+        
+        // Display
+        document.getElementById('score-display').innerText = totalDaily + "%";
+        
+        if(totalDaily >= 100 && totalQ >= 60 && doneTasks >= 6) {
+            document.getElementById('bonus-status').innerText = "100+ ACHIEVED!";
+        } else {
+            document.getElementById('bonus-status').innerText = "";
         }
 
-        function saveQs() {
-            const currentTotal = calcTotalQs();
-            const pb = parseInt(localStorage.getItem('jee-pb')) || 0;
-            if (currentTotal > pb) {
-                localStorage.setItem('jee-pb', currentTotal);
-                document.getElementById('pb-display').innerText = currentTotal + " Qs";
-                alert("NEW PERSONAL BEST! Keep this momentum for AIR < 1000.");
-            } else {
-                alert("Session Logged. Consistency is key.");
+        saveToday(totalDaily, totalQ, doneTasks);
+        checkStrictRules(totalDaily);
+    }
+
+    // STORAGE & STREAK LOGIC
+    function saveToday(score, q, t) {
+        const today = new Date().toDateString();
+        history[today] = score;
+        localStorage.setItem('study_history', JSON.stringify(history));
+    }
+
+    function checkStrictRules(currentScore) {
+        const body = document.getElementById('main-body');
+        const warn = document.getElementById('warning-box');
+
+        // If yesterday was a failure
+        let yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        let yScore = history[yesterday.toDateString()] || 0;
+
+        if (currentScore < 100) {
+            body.classList.add('red-zone');
+            // If failed 2 days in a row or currently in a penalty streak
+            if (yScore < 100 || failDays >= 2) {
+                warn.style.display = 'block';
+                // Only reset failDays if we finished 5 days of 100%
+            }
+        } else {
+            // If they did 100% today, check if they are in 5-day recovery
+            body.classList.remove('red-zone');
+            // Logic to clear warning only after 5 days... 
+            // For now, let's track the 100% streak
+            let s = 0;
+            const dates = Object.keys(history).reverse();
+            for(let date of dates) {
+                if(history[date] >= 100) s++;
+                else break;
+            }
+            if(s >= 5) {
+                warn.style.display = 'none';
             }
         }
+    }
 
-        // TIMER
-        setInterval(() => {
-            const distance = targetDate - new Date().getTime();
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((distance % (1000 * 60)) / 1000);
-            document.getElementById("countdown").innerHTML = `${d}d : ${h}h : ${m}m : ${s}s`;
-        }, 1000);
+    // GRAPH GENERATION
+    function renderChart() {
+        const ctx = document.getElementById('progressChart').getContext('2d');
+        const labels = Object.keys(history).slice(-7);
+        const data = Object.values(history).slice(-7);
 
-        // TASK SYSTEM
-        let tasks = JSON.parse(localStorage.getItem('rank-tasks')) || [];
-        function addTask() {
-            const input = document.getElementById('task-input');
-            if (!input.value) return;
-            tasks.push({ id: Date.now(), text: input.value, done: false });
-            input.value = "";
-            saveAndRender();
-        }
-        function toggleTask(id) {
-            tasks = tasks.map(t => t.id === id ? {...t, done: !t.done} : t);
-            saveAndRender();
-        }
-        function saveAndRender() {
-            localStorage.setItem('rank-tasks', JSON.stringify(tasks));
-            renderTasks();
-        }
-        function renderTasks() {
-            const list = document.getElementById('task-list');
-            list.innerHTML = "";
-            tasks.forEach(t => {
-                const item = document.createElement('div');
-                item.className = `p-5 rounded-2xl glass flex justify-between items-center cursor-pointer transition ${t.done ? 'opacity-40' : 'hover:bg-zinc-900'}`;
-                item.onclick = () => toggleTask(t.id);
-                item.innerHTML = `<span class="text-sm font-medium ${t.done ? 'line-through' : ''}">${t.text}</span> <div class="w-5 h-5 rounded-full border-2 border-blue-500 flex items-center justify-center">${t.done ? '✓' : ''}</div>`;
-                list.appendChild(item);
-            });
-            const percent = tasks.length ? Math.round((tasks.filter(t => t.done).length / tasks.length) * 100) : 0;
-            document.getElementById('progress-percent').innerText = `${percent}%`;
-            document.getElementById('progress-fill').style.width = `${percent}%`;
-        }
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Success %',
+                    data: data,
+                    borderColor: '#0ea5e9',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(14, 165, 233, 0.1)'
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, max: 120 }
+                }
+            }
+        });
+    }
 
-        // BACKLOG
-        let backlogs = JSON.parse(localStorage.getItem('rank-backlog')) || [];
-        function addBacklog() {
-            const input = document.getElementById('backlog-input');
-            if (!input.value) return;
-            backlogs.push(input.value);
-            input.value = "";
-            localStorage.setItem('rank-backlog', JSON.stringify(backlogs));
-            renderBacklog();
-        }
-        function renderBacklog() {
-            const list = document.getElementById('backlog-list');
-            list.innerHTML = "";
-            backlogs.forEach((b, i) => {
-                const item = document.createElement('div');
-                item.className = "text-[10px] p-2 bg-zinc-900 rounded border border-zinc-800 flex justify-between items-center group";
-                item.innerHTML = `<span>${b}</span> <button onclick="removeBacklog(${i})" class="text-red-500 opacity-0 group-hover:opacity-100">FIXED</button>`;
-                list.appendChild(item);
-            });
-        }
-        function removeBacklog(i) {
-            backlogs.splice(i, 1);
-            localStorage.setItem('rank-backlog', JSON.stringify(backlogs));
-            renderBacklog();
-        }
-    </script>
+    // EVENT LISTENERS
+    document.querySelectorAll('input').forEach(el => {
+        el.addEventListener('input', calculateDaily);
+    });
+
+    // LOAD
+    window.onload = () => {
+        updateTimer();
+        renderChart();
+        calculateDaily();
+    };
+</script>
+
 </body>
-                </html> 
-                  
+</html>
