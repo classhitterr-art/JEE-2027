@@ -3,322 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IIT MISSION CONTROL - AISHWARY</title>
+    <title>IIT COMMAND CENTER - AISHWARY</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         :root {
-            --bg: #020617;
-            --card: #1e293b;
-            --accent: #0ea5e9;
-            --danger: #dc2626;
-            --success: #10b981;
-            --text: #f8fafc;
+            --bg: #020617; --card: #1e293b; --accent: #0ea5e9;
+            --danger: #dc2626; --success: #10b981; --text: #f8fafc;
         }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 20px;
-            transition: all 0.5s ease;
-        }
-
-        /* STRICT MODE THEMES */
+        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 20px; transition: 0.5s; }
         body.red-zone { background-color: #450a0a !important; }
-        body.red-zone .card { border: 1px solid var(--danger); }
-
-        .container { max-width: 1000px; margin: 0 auto; }
-
-        /* HEADER SECTION */
-        .iit-logo {
-            font-size: 6rem;
-            font-weight: 900;
-            text-align: center;
-            background: linear-gradient(to bottom, #0ea5e9, #2563eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-            letter-spacing: 10px;
-        }
-
-        .welcome-banner {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: #94a3b8;
-        }
-
-        /* WARNING MESSAGE */
-        #warning-box {
-            display: none;
-            background: var(--danger);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            font-size: 1.5rem;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: bold;
-            border: 4px solid white;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-        .card {
-            background: var(--card);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
-        }
-
-        /* TIMER */
-        .timer-display {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--accent);
-            text-align: center;
-        }
-
-        /* TASKS */
-        .task-list { margin-top: 15px; }
-        .task-item {
-            display: flex;
-            align-items: center;
-            background: #0f172a;
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-        .task-item:hover { transform: translateX(5px); }
-        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 15px; cursor: pointer; }
-        input[type="text"] { background: transparent; border: none; color: white; width: 100%; font-size: 1rem; }
-
-        /* QUESTIONS */
-        .q-input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; color: #cbd5e1; }
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #475569;
-            background: #0f172a;
-            color: white;
-        }
-
-        /* MOTIVATION */
-        .quote-box {
-            font-size: 2rem;
-            text-align: center;
-            margin: 50px 0;
-            padding: 20px;
-            border-left: 5px solid var(--accent);
-            background: rgba(14, 165, 233, 0.1);
-        }
-
-        /* CALENDAR/GRAPH AREA */
-        .stats-area { grid-column: span 2; }
-
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .stats-area { grid-column: span 1; }
-            .iit-logo { font-size: 4rem; }
-        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .iit-logo { font-size: 6rem; font-weight: 900; text-align: center; background: linear-gradient(to bottom, #0ea5e9, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; letter-spacing: 10px; }
+        .welcome-banner { text-align: center; font-size: 1.8rem; margin-bottom: 30px; color: #94a3b8; }
+        #warning-box { display: none; background: var(--danger); color: white; padding: 25px; border-radius: 15px; font-size: 1.4rem; text-align: center; margin-bottom: 25px; border: 4px solid white; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.01); } 100% { transform: scale(1); } }
+        .grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+        .card { background: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 10px 15px rgba(0,0,0,0.3); position: relative; }
+        .timer-display { font-size: 2.2rem; font-weight: bold; color: var(--accent); text-align: center; font-family: monospace; }
+        .task-item { display: flex; align-items: center; background: #0f172a; padding: 10px; margin-bottom: 8px; border-radius: 8px; }
+        input[type="text"], input[type="number"] { background: transparent; border: 1px solid #334155; color: white; padding: 8px; border-radius: 5px; width: 100%; }
+        .btn-add { background: var(--accent); border: none; color: white; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
+        #calendar-inline { background: white; color: black; border-radius: 10px; padding: 10px; }
+        .quote-box { font-size: 1.6rem; text-align: center; margin: 40px 0; padding: 20px; border-left: 5px solid var(--accent); background: rgba(14, 165, 233, 0.1); }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .iit-logo { font-size: 4rem; } }
     </style>
 </head>
 <body id="main-body">
 
 <div class="container">
     <h1 class="iit-logo">IIT</h1>
-    <div class="welcome-banner">Welcome, Commander Aishwary</div>
+    <div class="welcome-banner">Mission Control: Aishwary</div>
 
-    <div id="warning-box">
-        "KYON AISHWARYA HO GAYA MAJA? KHEL LIYA APNE SAPNE KE SATH? KAR LIYE MAJE? IIT TO SECOND PRIORITY HAI! 🤬"
-    </div>
+    <div id="warning-box">"KYON AISHWARYA HO GAYA MAJA? KHEL LIYA APNE SAPNE KE SATH? IIT TO SECOND PRIORITY HAI! 🤬"</div>
 
     <div class="grid">
-        <div class="card">
-            <h2 style="margin-top:0">Countdown to Dec 31</h2>
-            <div id="timer" class="timer-display">00d 00h 00m</div>
-        </div>
+        <div>
+            <div class="card" style="margin-bottom: 20px;">
+                <h3>Mission Deadline (31 Dec)</h3>
+                <div id="timer" class="timer-display">00:00:00:00</div>
+            </div>
 
-        <div class="card">
-            <h2 style="margin-top:0">Today's Score</h2>
-            <div style="font-size: 3.5rem; text-align: center; font-weight: 900;" id="score-display">0%</div>
-            <div id="bonus-status" style="text-align:center; color: gold; font-weight: bold;"></div>
-        </div>
-
-        <div class="card">
-            <h3>Daily Slots (Min 6 Required)</h3>
-            <div class="task-list" id="task-list">
-                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 1..." class="t-text"></div>
-                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 2..." class="t-text"></div>
-                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 3..." class="t-text"></div>
-                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 4..." class="t-text"></div>
-                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 5..." class="t-text"></div>
-                <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 6..." class="t-text"></div>
+            <div class="card">
+                <h3>Daily Slots (Min 6)</h3>
+                <div id="task-list">
+                    <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 1..." class="t-text"></div>
+                    <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 2..." class="t-text"></div>
+                    <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 3..." class="t-text"></div>
+                    <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 4..." class="t-text"></div>
+                    <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 5..." class="t-text"></div>
+                    <div class="task-item"><input type="checkbox" class="t-check"><input type="text" placeholder="Task 6..." class="t-text"></div>
+                </div>
+                <button class="btn-add" onclick="addNewSlot()">+ Add Extra Slot</button>
             </div>
         </div>
 
-        <div class="card">
-            <h3>Questions (Target 60)</h3>
-            <div class="q-input-group">
-                <label>Physics (Target 20)</label>
-                <input type="number" id="p-q" value="0" max="20" class="q-val">
+        <div>
+            <div class="card" style="margin-bottom: 20px; text-align: center;">
+                <h3>Today's Efficiency</h3>
+                <div style="font-size: 4rem; font-weight: 900;" id="score-display">0%</div>
+                <div id="bonus-status" style="color: gold; font-weight: bold; height: 20px;"></div>
             </div>
-            <div class="q-input-group">
-                <label>Chemistry (Target 20)</label>
-                <input type="number" id="c-q" value="0" max="20" class="q-val">
-            </div>
-            <div class="q-input-group">
-                <label>Maths (Target 20)</label>
-                <input type="number" id="m-q" value="0" max="20" class="q-val">
-            </div>
-        </div>
 
-        <div class="card stats-area">
-            <h3>Annual Performance Tracker</h3>
-            <canvas id="progressChart" height="100"></canvas>
+            <div class="card" style="margin-bottom: 20px;">
+                <h3>Questions (Target 60)</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div>P (20): <input type="number" id="p-q" value="0" max="20" class="q-val"></div>
+                    <div>C (20): <input type="number" id="c-q" value="0" max="20" class="q-val"></div>
+                    <div>M (20): <input type="number" id="m-q" value="0" max="20" class="q-val"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Performance Calendar</h3>
+                <div id="calendar-inline"></div>
+            </div>
         </div>
     </div>
 
-    <div class="quote-box" id="quote">
-        "If you don't sacrifice for what you want, what you want becomes the sacrifice."
-    </div>
+    <div class="quote-box">"If you don't sacrifice for what you want, what you want becomes the sacrifice."</div>
 </div>
 
 <script>
-    // INITIALIZATION & DATA RECOVERY
     let history = JSON.parse(localStorage.getItem('study_history')) || {};
-    let streak = parseInt(localStorage.getItem('success_streak')) || 0;
-    let failDays = parseInt(localStorage.getItem('fail_days')) || 0;
-
-    // TIMER LOGIC
+    
+    // 1. TIMER WITH SECONDS
     function updateTimer() {
         const target = new Date("December 31, 2026 23:59:59").getTime();
         const now = new Date().getTime();
         const d = target - now;
         const days = Math.floor(d / (1000 * 60 * 60 * 24));
         const hours = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        document.getElementById('timer').innerHTML = `${days}d ${hours}h`;
+        const mins = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((d % (1000 * 60)) / 1000);
+        document.getElementById('timer').innerHTML = `${days}d ${hours}h ${mins}m ${secs}s`;
     }
     setInterval(updateTimer, 1000);
 
-    // CORE CALCULATION
-    function calculateDaily() {
-        const q_inputs = document.querySelectorAll('.q-val');
-        let totalQ = 0;
-        q_inputs.forEach(input => totalQ += parseInt(input.value || 0));
-        
-        const qPercent = (totalQ / 60) * 100;
-
-        const tasks = document.querySelectorAll('.t-check');
-        let doneTasks = 0;
-        tasks.forEach(t => { if(t.checked) doneTasks++; });
-        const tPercent = (doneTasks / 6) * 100;
-
-        const totalDaily = Math.round((qPercent + tPercent) / 2);
-        
-        // Display
-        document.getElementById('score-display').innerText = totalDaily + "%";
-        
-        if(totalDaily >= 100 && totalQ >= 60 && doneTasks >= 6) {
-            document.getElementById('bonus-status').innerText = "100+ ACHIEVED!";
-        } else {
-            document.getElementById('bonus-status').innerText = "";
-        }
-
-        saveToday(totalDaily, totalQ, doneTasks);
-        checkStrictRules(totalDaily);
+    // 2. DYNAMIC SLOTS
+    function addNewSlot() {
+        const container = document.getElementById('task-list');
+        const div = document.createElement('div');
+        div.className = 'task-item';
+        div.innerHTML = `<input type="checkbox" class="t-check"><input type="text" placeholder="Extra Task..." class="t-text">`;
+        container.appendChild(div);
+        attachListeners();
     }
 
-    // STORAGE & STREAK LOGIC
-    function saveToday(score, q, t) {
+    // 3. LOGIC & RED ZONE
+    function calculate() {
+        const qVals = document.querySelectorAll('.q-val');
+        let totalQ = 0; qVals.forEach(v => totalQ += parseInt(v.value || 0));
+        
+        const checks = document.querySelectorAll('.t-check');
+        let doneT = 0; checks.forEach(c => { if(c.checked) doneT++; });
+        
+        const qScore = Math.min((totalQ / 60) * 100, 100);
+        const tScore = Math.min((doneT / 6) * 100, 100);
+        const total = Math.round((qScore + tScore) / 2);
+
+        document.getElementById('score-display').innerText = total + "%";
+        document.getElementById('bonus-status').innerText = (total >= 100) ? "100+ MODE ON" : "";
+
+        // Red Zone Logic
         const today = new Date().toDateString();
-        history[today] = score;
+        history[today] = total;
         localStorage.setItem('study_history', JSON.stringify(history));
-    }
 
-    function checkStrictRules(currentScore) {
         const body = document.getElementById('main-body');
         const warn = document.getElementById('warning-box');
+        
+        // Only trigger Red if it's NOT the first day of use OR if today is ending
+        let yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+        let yScore = history[yesterday.toDateString()];
 
-        // If yesterday was a failure
-        let yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        let yScore = history[yesterday.toDateString()] || 0;
-
-        if (currentScore < 100) {
+        if (yScore !== undefined && yScore < 100 && total < 100) {
             body.classList.add('red-zone');
-            // If failed 2 days in a row or currently in a penalty streak
-            if (yScore < 100 || failDays >= 2) {
-                warn.style.display = 'block';
-                // Only reset failDays if we finished 5 days of 100%
-            }
+            warn.style.display = 'block';
         } else {
-            // If they did 100% today, check if they are in 5-day recovery
             body.classList.remove('red-zone');
-            // Logic to clear warning only after 5 days... 
-            // For now, let's track the 100% streak
-            let s = 0;
-            const dates = Object.keys(history).reverse();
-            for(let date of dates) {
-                if(history[date] >= 100) s++;
-                else break;
-            }
-            if(s >= 5) {
-                warn.style.display = 'none';
-            }
+            warn.style.display = 'none';
         }
     }
 
-    // GRAPH GENERATION
-    function renderChart() {
-        const ctx = document.getElementById('progressChart').getContext('2d');
-        const labels = Object.keys(history).slice(-7);
-        const data = Object.values(history).slice(-7);
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Success %',
-                    data: data,
-                    borderColor: '#0ea5e9',
-                    tension: 0.4,
-                    fill: true,
-                    backgroundColor: 'rgba(14, 165, 233, 0.1)'
-                }]
-            },
-            options: {
-                scales: {
-                    y: { beginAtZero: true, max: 120 }
-                }
-            }
-        });
+    function attachListeners() {
+        document.querySelectorAll('input').forEach(i => i.oninput = calculate);
     }
 
-    // EVENT LISTENERS
-    document.querySelectorAll('input').forEach(el => {
-        el.addEventListener('input', calculateDaily);
+    // 4. CALENDAR
+    flatpickr("#calendar-inline", {
+        inline: true,
+        onDayCreate: (dObj, dStr, fp, dayElem) => {
+            const dateStr = dayElem.dateObj.toDateString();
+            if(history[dateStr] >= 100) dayElem.style.backgroundColor = "#10b981";
+            else if(history[dateStr] < 100) dayElem.style.backgroundColor = "#ef4444";
+        }
     });
 
-    // LOAD
-    window.onload = () => {
-        updateTimer();
-        renderChart();
-        calculateDaily();
-    };
+    window.onload = () => { attachListeners(); updateTimer(); calculate(); };
 </script>
-
 </body>
 </html>
